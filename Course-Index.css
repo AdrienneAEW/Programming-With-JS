@@ -8,4 +8,13 @@ h1, .practice-description {
 
 .test-output {
   padding: 1.5rem;
+}
+
+.same-diff-content {
+  display: grid;
+  grid-template-columns: 30% 50% 20%;
+  grid-template-rows: 1fr;
+}
+.same-diff-content #same-diff-form label, .same-diff-content #same-diff-form #same-diff-btn {
+  display: block;
 }/*# sourceMappingURL=Course-Index.css.map */

@@ -9,3 +9,16 @@ h1, .practice-description {
 .test-output {
     padding: 1.5rem;
 }
+
+//SAME DIFF APP
+.same-diff-content {
+    display: grid;
+    grid-template-columns: 30% 50% 20%;
+    grid-template-rows: 1fr;
+
+    #same-diff-form {
+        label, #same-diff-btn {
+            display: block;
+        }
+    }
+}
