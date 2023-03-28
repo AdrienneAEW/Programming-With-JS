@@ -10,6 +10,10 @@ h1, .practice-description {
   padding: 1.5rem;
 }
 
+.same-diff-heading #add-title {
+  display: none;
+}
+
 .same-diff-content {
   display: grid;
   grid-template-columns: 30% 50% 20%;
