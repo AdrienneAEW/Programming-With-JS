@@ -16,9 +16,33 @@ h1, .practice-description {
 
 .same-diff-content {
   display: grid;
-  grid-template-columns: 30% 50% 20%;
+  grid-template-columns: 25% 35% 12%;
   grid-template-rows: 1fr;
+  justify-content: center;
 }
 .same-diff-content #same-diff-form label, .same-diff-content #same-diff-form #same-diff-btn {
   display: block;
+}
+
+#same-diff-table .print {
+  display: none;
+}
+#same-diff-table thead th:nth-of-type(1) {
+  text-align: left;
+}
+#same-diff-table tbody td {
+  text-align: center;
+  padding: 4px;
+}
+#same-diff-table tbody td:nth-of-type(1) {
+  text-align: left;
+}
+
+@media print {
+  .no-print {
+    display: none;
+  }
+  .print {
+    display: block;
+  }
 }/*# sourceMappingURL=Course-Index.css.map */

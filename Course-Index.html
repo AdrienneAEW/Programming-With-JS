@@ -10,33 +10,36 @@
 </head>
 <body>
     <main>
+      <div class="no-print">
         <h1>Programming with JavaScript</h1>
         <p class="practice-description">Course Practice</p>
         <h2>Making Templates</h2>
         <p class="sub-description">Using the Prototype property to make templates that are global to my business.</p>
         <p id="template-output" class="test-output">Output goes here when not being shown in console. Praise God!</p>
         <input type="text" id="odd-even-data">
-        <h2>Coding An App</h2>
+      </div>
+        <h1 class="no-print">Same/Different App</h1>
         <section class="same-diff-heading app-description">
           <h2 id="same-diff-title">Give Your Thing A Title</h2>
-          <input type="text" id="add-title" title="Enter new title." aria-label="Enter new title." />
-          <p>i.e., T-shirts, Slippers, PJs, etc.</p>
-          <button type="button" id="sd-title-btn" class="aew-btn" onclick="editSDTitle()">Edit Title</button>
+          <input type="text" id="add-title" class="no-print" title="Enter new title." aria-label="Enter new title." />
+          <p class="no-print">i.e., T-shirts, Slippers, PJs, etc.</p>
+          <button type="button" id="sd-title-btn" class="aew-btn no-print" onclick="editSDTitle()">Edit Title</button>
         </section>
         <section class="same-diff-content">
-            <form id="same-diff-form">
-              <h3>Difference Form</h3>
+            <form id="same-diff-form" class="no-print">
+              <h3>Add A Recipient</h3>
+              <p class="form-note">Add name, size and length/width details.</p>
               <label for="sd-name">Name<small><sup>Required</sup></small></label>
-              <input type="text" id="sd-name" placeholder="Enter name of receiptent." aria-label="Enter name of receiptent." required />
+              <input type="text" id="sd-name" placeholder="Enter name of recipient." aria-label="Enter name of recipient." required />
               <label for="sd-size">Size<small><sup>Required</sup></small></label>
               <input type="text" id="sd-size" placeholder="Enter size, i.e., 7.5, s, small, etc." aria-label="Enter size, i.e., 7.5, s, small, etc." required />
-              <label for="sd-len-wid">Width or Length</label>
+              <label for="sd-len-wid">Length/Width</label>
               <p class="form-note">Leaving input empty will default to Regular.</p>
               <input type="text" id="sd-len-wid" placeholder="Enter width, i.e., 32, E, AA, tall, etc." aria-label="Enter size, i.e., 7.5, s, small, etc." />
               <button type="button" id="same-diff-btn" class="aew-btn" onclick="sdAddRecipient()">Add</button>
             </form>
             <table id="same-diff-table">
-              <caption><h3>Thing List</h3></caption>
+              <caption><h3>Recipients</h3></caption>
               <thead>
                 <tr>
                   <th>Name</th>
@@ -46,18 +49,22 @@
                   <th>Delete</th>
                 </tr>
               </thead>
-              <tbody></tbody>
+              <tbody class="no-print"></tbody>
+              <tbody class="print"></tbody>
               <tfoot>
                 <tr>
                   <td colspan="3"><strong>Grand Total: <span id="same-diff-total">0</span></strong></td>
                 </tr>
-                <tr>
-                  <td colspan="3" id="sd-footer-cell"><button type="button" id="sd-save-btn" class="aew-btn" title="Your data will be stored as long as you don't clear the cache." aria-label="Your data will be save as long as you don't clear the cache." onclick="saveSDData()">Save Data</button></td>
+                <tr class="no-print">
+                  <td colspan="3" id="sd-footer-cell">
+                    <button type="button" id="sd-save-btn" class="aew-btn" title="Your data will be stored as long as you don't clear the cache." aria-label="Your data will be save as long as you don't clear the cache." onclick="saveSDData()">Save Data</button>
+                    <button type="button" id="sd-print-data-btn" class="aew-btn" title="Print and/or save lists." aria-label="Print and/or save list." onclick="sdPrint()">Print</button>
+                  </td>
                 </tr>
               </tfoot>
             </table>
             <table id="sd-size-table">
-              <caption><h3>Total By Size</h3></caption>
+              <caption><h3>To Purchase</h3></caption>
               <thead>
                 <tr>
                   <th>Size</th>
