@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="AdrienneAEW">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/CSS/Course-Index.css">
+    <title>Note Taker App</title>
+</head>
+<body>
+    <main>
+        <h1>Note Taker</h1>
+        
+        <p class="app-description no-print">A Note Taking App that's site specific. Great for Blogs, informational and educations sites. A great way to increase user engagement, sessions and hopefully conversions.</p>
+        <section class="app-heading">
+        <h2 id="app-title">User Notes</h2>
+        <button type="button" id="sd-title-btn" class="aew-btn no-print" onclick="editTitle(this)">Edit Title</button>
+        <input type="text" id="app-title-input" />
+        
+        </section>
+        <section class="note-taker-containter app-container">
+            <form id="note-form"  class="no-print">
+                <label for="note-title">Give Your Note A Title</label>
+                <input type="text" id="note-title" />
+                <label for="note-text">Create A Note<small><sup>Required</sup></small></label>
+                <textarea name="note-text" id="note-text" rows="5" required aria-required="true"></textarea>
+                <button type="button" id="add-note-btn" class="aew-btn note-add-btn" onclick="addNote()">Add Note</button>
+                <button type="reset" id="reset-note-btn" class="aew-btn note-reset-btn">Reset</button>
+            </form>
+
+            <div class="notes-container">
+                <h2> Notes</h2>
+                <p class="no-notes-msg">There are no notes to display.</p>
+                
+            </div>
+        </section>
+    </main>
+<script src="/JScript/Note-Taker.js"></script>
+</body>
+</html>

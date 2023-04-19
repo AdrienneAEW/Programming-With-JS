@@ -10,6 +10,13 @@ h1, .practice-description {
   padding: 1.5rem;
 }
 
+form label {
+  font-weight: 600;
+}
+form label, form button {
+  display: block;
+}
+
 .same-diff-heading #add-title {
   display: none;
 }
@@ -38,6 +45,13 @@ h1, .practice-description {
   text-align: left;
 }
 
+#sd-size-table thead th:nth-of-type(1) {
+  text-align: left;
+}
+#sd-size-table thead tbody td:nth-of-type(2) {
+  text-align: center;
+}
+
 @media print {
   .no-print {
     display: none;
@@ -45,4 +59,7 @@ h1, .practice-description {
   .print {
     display: block;
   }
+}
+#app-title-input {
+  display: none;
 }/*# sourceMappingURL=Course-Index.css.map */
