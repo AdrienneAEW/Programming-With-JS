@@ -20,7 +20,7 @@
       </div>
         <h1 class="no-print">Same/Different App</h1>
         <section class="same-diff-heading app-heading">
-          <h2 id="same-diff-title app-title">Give Your Thing A Title</h2>
+          <h2 id="same-diff-title" class="app-title">Give Your Thing A Title</h2>
           <input type="text" id="add-title" class="no-print" title="Enter new title." aria-label="Enter new title." />
           <p class="no-print app-description">i.e., T-shirts, Slippers, PJs, etc.</p>
           <button type="button" id="sd-title-btn" class="aew-btn no-print" onclick="editSDTitle()">Edit Title</button>
@@ -29,14 +29,16 @@
             <form id="same-diff-form" class="no-print">
               <h3>Add A Recipient</h3>
               <p class="form-note">Add name, size and length/width details.</p>
-              <label for="sd-name">Name<small><sup>Required</sup></small></label>
-              <input type="text" id="sd-name" placeholder="Enter name of recipient." aria-label="Enter name of recipient." required />
-              <label for="sd-size">Size<small><sup>Required</sup></small></label>
-              <input type="text" id="sd-size" placeholder="Enter size, i.e., 7.5, s, small, etc." aria-label="Enter size, i.e., 7.5, s, small, etc." required />
-              <label for="sd-len-wid">Length/Width</label>
-              <p class="form-note">Leaving input empty will default to Regular.</p>
-              <input type="text" id="sd-len-wid" placeholder="Enter width, i.e., 32, E, AA, tall, etc." aria-label="Enter size, i.e., 7.5, s, small, etc." />
-              <button type="button" id="same-diff-btn" class="aew-btn" onclick="sdAddRecipient()">Add</button>
+              <div class="sd-form-content">
+                  <label for="sd-name">Name<small><sup>Required</sup></small></label>
+                <input type="text" id="sd-name" placeholder="Enter name of recipient." aria-label="Enter name of recipient." required />
+                <label for="sd-size">Size<small><sup>Required</sup></small></label>
+                <input type="text" id="sd-size" placeholder="Enter size, i.e., 7.5, s, small, etc." aria-label="Enter size, i.e., 7.5, s, small, etc." required />
+                <label for="sd-len-wid">Length/Width</label>
+                <p class="form-note">Leaving input empty will default to Regular.</p>
+                <input type="text" id="sd-len-wid" placeholder="Enter width, i.e., 32, E, AA, tall, etc." aria-label="Enter size, i.e., 7.5, s, small, etc." />
+                <button type="button" id="same-diff-btn" class="aew-btn" onclick="sdAddRecipient()">Add</button>
+              </div>
             </form>
             <table id="same-diff-table">
               <caption><h3>Recipients</h3></caption>

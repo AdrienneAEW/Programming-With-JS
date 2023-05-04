@@ -82,8 +82,12 @@ form {
     }
 
     .print {
-        display: block;
+        display: grid;
+        grid-template-columns: auto;
     }
+
+    
+
 }
 
 //#endregion

@@ -32,8 +32,11 @@ const sdSizeTable = document.getElementById("sd-size-table")
 const sdSizeContent = sdSizeTable.getElementsByTagName("tbody")[0]
 const sdSaveBtn = document.getElementById("sd-save-btn")
 
+//Global Definitions
+let person, size, lenWid, sdTotal, sdSubtotal, atNum
+
 //Table Add Row/Cell Definitions
-let sdListRow, sdDiffColumn1, sdDiffColumn2, sdDiffColumn3, sdDiffColumn4, sdDiffColumn5, rowNum, sizeRow, sdTotal, sdSubtotal, atNum
+let sdListRow, sdDiffColumn1, sdDiffColumn2, sdDiffColumn3, sdDiffColumn4, sdDiffColumn5, rowInd, rowNum, szt, szsub
 const sameDiffList = {
     rName: [],
     rSize: [],
@@ -48,7 +51,10 @@ let sizeCount = {
 let sdCounted = []
 
 
+
+
 //GLOBAL FUNCTIONS
+//Recipient Table
 function addSDRow(findTable) {
     sdListRow = findTable.insertRow()
     sdDiffColumn1 = sdListRow.insertCell(0)
@@ -58,28 +64,26 @@ function addSDRow(findTable) {
     sdDiffColumn5 = sdListRow.insertCell(4)
 
     let sdEditBtn, sdDeleteBtn
-        sdEditBtn = document.createElement("button")
-        sdDeleteBtn = document.createElement("button")
+    sdEditBtn = document.createElement("button")
+    sdDeleteBtn = document.createElement("button")
 
-        sdEditBtn.setAttribute("class", "btn edit-entry-btn")
-        sdEditBtn.setAttribute("title", "edit entry")
-        sdEditBtn.setAttribute("aria-label", "edit entry")
-        sdEditBtn.setAttribute("onclick", "editDeleteEntry(this)")
-        sdEditBtn.innerHTML = '&#9997;&#127996;'
-        sdDiffColumn4.appendChild(sdEditBtn)
-    
-        sdDeleteBtn.setAttribute("class", "btn delete-entry-btn")
-        sdDeleteBtn.setAttribute("title", "delete entry")
-        sdDeleteBtn.setAttribute("aria-label", "delete entry")
-        sdDeleteBtn.setAttribute("onclick", "editDeleteEntry(this)")
-        sdDeleteBtn.innerHTML = '&#10060;'
-        sdDiffColumn5.appendChild(sdDeleteBtn)
+    sdEditBtn.setAttribute("class", "btn edit-entry-btn")
+    sdEditBtn.setAttribute("title", "edit entry")
+    sdEditBtn.setAttribute("aria-label", "edit entry")
+    sdEditBtn.setAttribute("onclick", "editDeleteEntry(this)")
+    sdEditBtn.innerHTML = '&#9997;&#127996;'
+    sdDiffColumn4.appendChild(sdEditBtn)
 
+    sdDeleteBtn.setAttribute("class", "btn delete-entry-btn")
+    sdDeleteBtn.setAttribute("title", "delete entry")
+    sdDeleteBtn.setAttribute("aria-label", "delete entry")
+    sdDeleteBtn.setAttribute("onclick", "editDeleteEntry(this)")
+    sdDeleteBtn.innerHTML = '&#10060;'
+    sdDiffColumn5.appendChild(sdDeleteBtn)
 }
 
-
 //Size Table Functions
-function addSDSizeRow() {
+ function addSDSizeRow() {
     sdListRow = sdSizeContent.insertRow()
     sdDiffColumn1 = sdListRow.insertCell(0)
     sdDiffColumn2 = sdListRow.insertCell(1)
@@ -115,6 +119,7 @@ function saveOrUpdate() {
     }
 }
 
+
 //Count Function
 function sdCount(findLW, findSZ) {
     for (let k = 0; k < sameDiffList.rLenWid.length; k++) {
@@ -134,6 +139,27 @@ function sdCount(findLW, findSZ) {
     }
 
     sdCounted = []
+}
+
+function calcSizeTable(lenWid, size) {
+    sdCount(lenWid, size)
+    findCategoryRow(lenWid)
+    szt = rowNum
+    szsub = sizeCount.sz[atNum].indexOf(size) + 1
+
+    if (sdTotal == 0) {
+        sdSizeContent.deleteRow(szsub)
+        sdSizeContent.deleteRow(szt)
+        sizeCount.sz[atNum].splice(szsub - 1, 1)
+        sizeCount.lw[atNum].splice(szt)
+    } else if (sdSubtotal == 0) {
+        sdSizeContent.deleteRow(szsub)
+        sdSizeContent.rows[szt].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
+    } else {
+        sdSizeContent.rows[szt].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
+        sdSizeContent.rows[szsub].cells[1].innerText = sdSubtotal
+    }
+    
 }
 
 //EDIT SAME DIFFERENT TITLE
@@ -157,9 +183,98 @@ function editSDTitle() {
     }
 }
 
+
+
 //ADD RECECIENT/BUILD TABLES
-function sdAddRecipient(person,size,lenWid) {
-    //check for empty inputs
+function sdAddRecipient() {    
+    //check for inputs for dupes/null values
+    if (sameDiffList.rName.includes(thingName.value)) {
+        alert(thingName.value + " is already on the list. No duplicates allowed. Please update this entry.")
+        thingName.focus()
+        thingName.select()
+    } else if (thingName.value == "" && thingSize.value == "") {
+        alert("You have to enter a name and size to add this recipient to the list.")
+        thingName.focus()
+    } else if (thingName.value == "") {
+        alert("You have to enter a name to add this recipient to the list.")
+        thingName.focus()
+    } else if (thingSize.value == "") {
+        alert("You have to enter a size to add this recipient to the list.")
+        thingSize.focus()
+    } else {
+        person = thingName.value
+        size = thingSize.value
+
+        if (thingLenWid.value == "") {
+            lenWid = "Regular"
+        } else {
+            lenWid = thingLenWid.value
+        }
+        
+        //Build Recipient Table
+        addSDRow(sdTableContent)
+        sdDiffColumn1.innerText = person
+        sdDiffColumn2.innerText = size
+        sdDiffColumn3.innerText = lenWid
+        sameDiffList.rName.push(person)
+        sameDiffList.rSize.push(size)
+        sameDiffList.rLenWid.push(lenWid)
+
+        //Build sizeCount Array and Size Table       
+        if(sizeCount.lw.length == 0) {
+            sizeCount.lw.push(lenWid)
+            sizeCount.sz.push([size])
+            //build size table
+            addSDSizeRow()
+            sdLenWidContent(lenWid)
+            addSDSizeRow()
+            sdSubContent(size)
+        } else {
+            if (sizeCount.lw.includes(lenWid) == false) {
+                sizeCount.lw.push(lenWid)
+                sizeCount.sz.push([size])
+                //build size table
+                addSDSizeRow()
+                sdLenWidContent(lenWid)
+                addSDSizeRow()
+                sdSubContent(size)
+            } else {
+                atNum = sizeCount.lw.indexOf(lenWid)
+                if (sizeCount.sz[atNum].includes(size) == false) {
+                    sizeCount.sz[atNum].push(size)
+                    console.log("You need to add row to category " + lenWid)
+                    findCategoryRow(lenWid)
+                    console.log("Category row index = " + rowNum)
+                    szt = rowNum
+                    szsub = sizeCount.sz[atNum].length
+                    console.log("SubRow index is " + szsub)
+                    sdListRow = sdSizeContent.insertRow(szt + szsub)
+                    sdDiffColumn1 = sdListRow.insertCell(0)
+                    sdDiffColumn2 = sdListRow.insertCell(1)
+                    sdSubContent(size)
+                    sdCount(lenWid, size)
+                    sdSizeContent.rows[szt].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
+                } else {
+                    sdCount(lenWid, size)
+                    findCategoryRow(lenWid)
+                    szt = rowNum
+                    szsub = sizeCount.sz[atNum].indexOf(size) + 1
+                    sdSizeContent.rows[szt].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
+                    sdSizeContent.rows[szsub].cells[1].innerText = sdSubtotal
+                }
+            }
+
+        }
+
+        sameDiffTotal.innerHTML = "<strong>" + sameDiffList.rName.length + "</strong>"
+        thingName.value = ""
+        thingSize.value = ""
+        thingLenWid.value = ""
+        thingName.focus()
+    }
+}
+/* function sdAddRecipient(person,size,lenWid) {
+    //check for inputs for dupes/null values
     if (sameDiffList.rName.includes(thingName.value)) {
         alert(thingName.value + " is already on the list. No duplicates allowed. Please update this entry.")
         thingName.focus()
@@ -200,7 +315,7 @@ function sdAddRecipient(person,size,lenWid) {
             sizeCount.sz.push([size])
             addSDSizeRow()
             sdLenWidContent(lenWid)
-            
+            sdListRow.setAttribute("class", "size-heading")
             addSDSizeRow()
             sdSubContent(size)
         } else  {
@@ -208,7 +323,14 @@ function sdAddRecipient(person,size,lenWid) {
             findCategoryRow(lenWid)
 
             if (sizeCount.sz[atNum].includes(size) == false) {
-                sizeCount.sz[atNum].push(size)
+                if (sizeCount.sz[atNum].length == 1) {
+                    sizeCount.sz[atNum] += ("," + newSZ)
+                    sizeCount.sz[atNum].split(",")
+                } else {
+                    sizeCount.sz[atNum].push(size)
+                }
+
+                
                 sizeRow = sizeCount.sz[atNum].length
 
                 findCategoryRow(lenWid)
@@ -235,6 +357,9 @@ function sdAddRecipient(person,size,lenWid) {
     thingLenWid.value = ""
     thingName.focus()
 }
+
+*/
+
 
 
 //DATA STORAGE
@@ -280,11 +405,11 @@ window.onload = function() {
                 //Build sizeCount Array
                 if (sizeCount.lw.includes(sameDiffList.rLenWid[i]) == false) {
                     sizeCount.lw.push(sameDiffList.rLenWid[i]) 
-                    sizeCount.sz.push(sameDiffList.rSize[i])
+                    sizeCount.sz.push([sameDiffList.rSize[i]])
                 } else {
                     atNum = sizeCount.lw.indexOf(sameDiffList.rLenWid[i])
                     if (sizeCount.sz[atNum].includes(sameDiffList.rSize[i]) == false) {
-                        sizeCount.sz[atNum] += "," + sameDiffList.rSize[i]
+                        sizeCount.sz[atNum].push(sameDiffList.rSize[i])
                     }
                 }
 
@@ -292,6 +417,8 @@ window.onload = function() {
                     if (sizeCount.sz[g].includes(",")) {
                         sizeCount.sz[g] = sizeCount.sz[g].split(",")
                     }
+
+                    
                 }                
             }
 
@@ -332,227 +459,131 @@ window.onload = function() {
 
     saveOrUpdate()
 }
+
+
 //EDIT/DELETE ENTRIES
+
 const editEntryBtn = document.getElementsByClassName("edit-entry-btn")
 const deleteEntryBtn = document.getElementsByClassName("delete-entry-btn")
 
+function editDeleteEntry(element, newLW, newSZ, editColumn1, editColumn2, editColumn3) {
+    person = element.parentElement.parentElement.getElementsByTagName("td")[0].innerText
+    rowInd = sameDiffList.rName.indexOf(person)
+    size = sameDiffList.rSize[rowInd]
+    lenWid = sameDiffList.rLenWid[rowInd]
+    
 
-function editDeleteEntry(element, nameInd, rowInd, editLW, editSZ, editColumn1, editColumn2, editColumn3,  newLW, newSZ, szt, sc, szsub) {
-    
-    //Get element indexes and storage old lenWid and Size
-    nameInd = element.parentNode.parentNode.cells[0].innerText
-    rowInd = sameDiffList.rName.indexOf(nameInd)
-    editLW = sameDiffList.rLenWid[rowInd]
-    editSZ = sameDiffList.rSize[rowInd]
-    sc = sizeCount.lw.indexOf(editLW)
+    console.log(rowInd, person, size, lenWid)
+    console.log(rowInd, newLW, newSZ)
 
-    function setEditIndex(onLW) {
-        sc = sizeCount.lw.indexOf(onLW)
-        szsub = sizeCount.sz[sc].length
-    
-        for (let s = 0; s < sdSizeContent.rows.length; s++) {
-            if (sdSizeContent.rows[s].innerText.includes(onLW)) {
-                szt = s
-            }
-        }
-    }
 
-    
-    function calcSZTable(lw, sz) {
-        sdCount(lw, sz)
-        
-        if (sdTotal == 0) {
-            sdSizeContent.deleteRow(szsub)
-            sdSizeContent.deleteRow(szt)
-        } else if (sdSubtotal == 0) {
-            sdSizeContent.deleteRow(szsub)
-            sdSizeContent.rows[szt].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
-        } else {
-            sdSizeContent.rows[szsub].cells[1].innerText = sdSubtotal
-            sdSizeContent.rows[szt].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
-        }
-    }
-    
-    function updateListings(checkLW, checkSZ) {
-        findCategoryRow(checkLW)
-        atNum = sizeCount.lw.indexOf(checkLW)
-        sc = sizeCount.sz[atNum].indexOf(checkSZ) + 1
-        sdCount(checkLW, checkSZ)
-        sdSizeContent.rows[rowNum].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
-        sdSizeContent.rows[rowNum + sc].cells[1].innerText = sdSubtotal
-         
-        if (sdSubtotal == 0) {
-            sdSizeContent.deleteRow(rowNum + sc)
-            sizeCount.sz[atNum].splice((sc - 1), 1)                                                        
-        } else {
-            sdSizeContent.rows[rowNum + sc].cells[1].innerText = sdSubtotal
-        }
-
-        if (sdTotal == 0) {
-            sdSizeContent.deleteRow(rowNum)
-            sizeCount.lw.slice(atNum, 1)
-        } else {
-            sdSizeContent.rows[rowNum].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
-        }
-    }
-    
-    //Edit entry
     if (element.classList.contains("edit-entry-btn")) {
-        alert("You want to edit entry.")
-        editColumn1 = element.parentNode.parentNode.cells[0]
-        editColumn2 = element.parentNode.parentNode.cells[1]
-        editColumn3 = element.parentNode.parentNode.cells[2]
+        alert("You want to edit this entry.")
         
+        editColumn1 = element.parentElement.parentElement.getElementsByTagName("td")[0]
+        editColumn2 = element.parentElement.parentElement.getElementsByTagName("td")[1]
+        editColumn3 = element.parentElement.parentElement.getElementsByTagName("td")[2]  
+
         editColumn1.contentEditable = true
         editColumn2.contentEditable = true
         editColumn3.contentEditable = true
         editColumn1.focus()
 
-        //After updates
-        editColumn3.onblur = function () {
-            //Remove content editable return to form
+        editColumn3.onblur = function() {
             editColumn1.contentEditable = false
             editColumn2.contentEditable = false
-            alert("Did anything change.")
-            thingName.focus()
             editColumn3.contentEditable = false
-            
-            //Store new lenWid and Size data, update sameDiffList rLenWid and rSize
-            newLW = editColumn3.innerText
             newSZ = editColumn2.innerText
-            
-            sameDiffList.rLenWid[rowInd] = newLW
-            sameDiffList.rSize[rowInd] = newSZ            
-                      
-            //Add or update sizeCount and sdSizeContent
-            if (sizeCount.lw.includes(newLW) == false) {
-                addSDSizeRow()                
-                sdLenWidContent(newLW)
+            newLW = editColumn3.innerText
+            thingName.focus()
+            console.log(newLW, newSZ, lenWid, size)
 
-                addSDSizeRow()
-                sdSubContent(newSZ)
-                
-                sizeCount.lw.push(newLW)
-                sizeCount.sz.push([newSZ])
+            if (newLW !== lenWid) {
+                console.log(newLW + " does not match old " + lenWid)
+                sameDiffList.rSize[rowInd] = newSZ
+                sameDiffList.rLenWid[rowInd] = newLW
+                    
+                if (sizeCount.lw.includes(newLW) == false) {
+                    
+                    sizeCount.lw.push(newLW)
+                    sizeCount.sz.push([newSZ])
 
-                findCategoryRow(editLW)
-                updateListings(editLW, editSZ)
-            } else {
-                if (newLW == editLW) {
-                
-                    atNum = sizeCount.lw.indexOf(newLW)
-    
-                    if (sizeCount.sz[atNum].includes(newSZ) == true) {
-                        sc = sizeCount.sz[atNum].indexOf(newSZ) + 1
-                        findCategoryRow(newLW)
-                        sdTotal = Number(sdSizeContent.rows[rowNum].cells[1].innerText) + 1
-                        sdSubtotal = Number(sdSizeContent.rows[rowNum + sc].cells[1].innerText) + 1
-                        
-                        sdSizeContent.rows[rowNum].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
-                        sdSizeContent.rows[rowNum + sc].cells[1].innerText = sdSubtotal
-    
-                    } else {
-                        findCategoryRow(newLW)
-                        sc = sizeCount.sz[atNum].length + 1
-                        sizeCount.sz[atNum].push(newSZ)
-                        sdListRow = sdSizeContent.insertRow(rowNum + sc)
-                        sdDiffColumn1 = sdListRow.insertCell(0)
-                        sdDiffColumn2 = sdListRow.insertCell(1)
-                        sdSubContent(newSZ)
-                    }
+                    //add rows to size table
+                    addSDSizeRow()
+                    sdLenWidContent(newLW)
+                    addSDSizeRow()
+                    sdSubContent(newSZ)
+
+                    
+                    findCategoryRow(lenWid)
+                    sdCount(lenWid, size)
+                    atNum = sizeCount.lw.indexOf(lenWid)
+                    szt = rowNum
+                    szsub = sizeCount.sz[atNum].indexOf(size) + 1
+                    sdSizeContent.rows[szt].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
+                    sdSizeContent.rows[szsub].cells[1].innerText = sdSubtotal
+                    
                 } else {
                     atNum = sizeCount.lw.indexOf(newLW)
+                    
                     if (sizeCount.sz[atNum].includes(newSZ) == false) {
-                        sc = sizeCount.sz[atNum].length + 1
-                        sizeCount.sz[atNum].push(newSZ)
-                        findCategoryRow(newLW)
+                        sizeCount.sz[atNum].push(newSZ)                        
                         
-                        sdListRow = sdSizeContent.insertRow(rowNum + sc)
+                        console.log("You need to add row to category " + newLW)
+                        findCategoryRow(newLW)
+                        console.log("Category row index = " + rowNum)
+                        szt = rowNum
+                        szsub = sizeCount.sz[atNum].length
+                        console.log("SubRow index is " + szsub)
+                        sdListRow = sdSizeContent.insertRow(szt + szsub)
                         sdDiffColumn1 = sdListRow.insertCell(0)
                         sdDiffColumn2 = sdListRow.insertCell(1)
-                        sdSubContent(newSZ)
-
-                        sdTotal = Number(sdSizeContent.rows[rowNum].cells[1].innerText) + 1
-                        sdSizeContent.rows[rowNum].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
                         
-                    } else {
-                        sc = sizeCount.sz[atNum].indexOf(newSZ) + 1
-                        sdTotal = Number(sdSizeContent.rows[rowNum].cells[1].innerText) + 1
-                        sdSubtotal = Number(sdSizeContent.rows[rowNum + sc].cells[1].innerText) + 1
-                        
-                        sdSizeContent.rows[rowNum].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
-                        sdSizeContent.rows[rowNum + sc].cells[1].innerText = sdSubtotal
-                    }
-                    atNum = sizeCount.lw.indexOf(editLW)
-                    sc = sizeCount.sz[atNum].indexOf(editSZ) + 1
-                    findCategoryRow(editLW)
-                    sdTotal = Number(sdSizeContent.rows[rowNum].cells[1].innerText) -  1
-                    sdSubtotal = Number(sdSizeContent.rows[rowNum + sc].cells[1].innerText) - 1
 
-                    if (sdSubtotal == 0) {
-                        sdSizeContent.deleteRow(rowNum + sc)
-                        sizeCount.sz[atNum].splice((sc - 1), 1)                                                        
+                        calcSizeTable(lenWid, size)
                     } else {
-                        sdSizeContent.rows[rowNum + sc].cells[1].innerText = sdSubtotal
-                    }
-
-                    if (sdTotal == 0) {
-                        sdSizeContent.deleteRow(rowNum)
-                        sizeCount.lw.slice(atNum, 1)
-                    } else {
-                        sdSizeContent.rows[rowNum].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
+                        calcSizeTable(newLW, newSZ)
                     }
                 }
+            } else {
+                atNum = sizeCount.lw.indexOf(newLW)               
+                if (sizeCount.sz[atNum].includes(newSZ) == false) {
+                    sizeCount.sz[atNum].push(newSZ)
+                    sameDiffList.rSize[rowInd] = newSZ
+                    console.log("You need to add row to category " + newLW)
+                    findCategoryRow(newLW)
+                    console.log("Category row index = " + rowNum)
+                    szt = rowNum
+                    szsub = sizeCount.sz[atNum].length
+                    console.log("SubRow index is " + szsub)
+                    sdListRow = sdSizeContent.insertRow(szt + szsub)
+                    sdDiffColumn1 = sdListRow.insertCell(0)
+                    sdDiffColumn2 = sdListRow.insertCell(1)
+                    sdSubContent(newSZ)
+                    sdCount(lenWid, size)
+                    sdSizeContent.rows[szt].cells[1].innerHTML = "<strong>" + sdTotal + "</strong>"
+                } else {
+                    calcSizeTable(newLW, newSZ)
+                }
+            }
 
-                
+            if (person != editColumn1.innerText) {
+                sameDiffList.rName[rowInd] = editColumn1.innerText
             }
         }
+
         
         
-        if (sameDiffList.rName[rowInd] != editColumn1.innerText) {
-            sameDiffList.rName[rowInd] = editColumn1.innerText
-        }        
-    }   
-    
-    //Delete entry
+    }
+
     if (element.classList.contains("delete-entry-btn")) {
-        if (confirm("Clicking \"Okay\" will delete " + sameDiffList.rName[rowInd] + " , " + sameDiffList.rLenWid[rowInd] + " - " + sameDiffList.rSize[rowInd] + " from the list. This action cannot be undone. \n Click \"Cancel\" to keep this entry.") == true) {
-            sdTableContent.deleteRow(rowInd)
-            sameDiffList.rName.splice(rowInd, 1)
-            sameDiffList.rSize.splice(rowInd, 1)
-            sameDiffList.rLenWid.splice(rowInd, 1)
-            
-            sizeCount.lw = []
-            sizeCount.sz = []
-            
-            
-            for (let i = 0; i < sameDiffList.rLenWid.length; i++) {
-                if (sizeCount.lw.includes(sameDiffList.rLenWid[i]) == false) {
-                    sizeCount.lw.push(sameDiffList.rLenWid[i]) 
-                    sizeCount.sz.push([sameDiffList.rSize[i]])
-                } else {
-                    atNum = sizeCount.lw.indexOf(sameDiffList.rLenWid[i])
-                    if (sizeCount.sz[atNum].includes(sameDiffList.rSize[i]) == false) {
-                        sizeCount.sz[atNum].push(sameDiffList.rSize[i])
-                    }
-                }
-
-                for (let g = 0; g < sizeCount.sz.length; g++) {
-                    if (sizeCount.sz[g].includes(",")) {
-                        sizeCount.sz[g] = sizeCount.sz[g].split(",")
-                    }
-                }
-            }
-            setEditIndex(editLW, editSZ)
-            calcSZTable(editLW, editSZ)
-            sameDiffTotal.innerHTML = "<strong>" + sameDiffList.rName.length + "</strong>"
-
+        if (confirm("Deleting this entry cannot be undone. Do you want to delete this entry?") == true) {
+            alert("This entry has been deleted.")
         } else {
             return
         }
     }
 }
-
 
 //PRINT DATA
 let printHeader, printHeaderRow, printLabel4, printLabel5
@@ -560,6 +591,7 @@ printHeader = sameDiffTable.getElementsByTagName("thead")[0]
 printHeaderRow = printHeader.getElementsByTagName("tr")[0]
 printLabel4 = printHeaderRow.getElementsByTagName("th")[3]
 printLabel5 = printHeaderRow.getElementsByTagName("th")[4]
+
 
 function sdPrintReset() {
     sdPrintTContent.classList.add("print")
