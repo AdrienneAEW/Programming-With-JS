@@ -52,14 +52,122 @@ form label, form button {
   text-align: center;
 }
 
+#app-title-input {
+  display: none;
+}
+
+/*google fonts - https://fonts.google.com/share?selection.family=Arsenal:wght@400;700%7CDuru%2BSans%7CModak
+font-family: 'Arsenal', sans-serif;
+font-family: 'Duru Sans', sans-serif;
+font-family: 'Modak', cursive;
+*/
+#switch-game-main {
+  font-family: "Duru Sans", sans-serif;
+}
+#switch-game-main h1, #switch-game-main h2, #switch-game-main h3, #switch-game-main h4, #switch-game-main h5, #switch-game-main h6, #switch-game-main details summary {
+  font-family: "Arsenal", sans-serif;
+}
+#switch-game-main details summary {
+  font-size: 1.5em;
+  font-weight: 600;
+}
+
+.switch-game-btn {
+  background-color: #5B4480;
+  color: #ffe4c4;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12rem;
+  opacity: 0.5;
+}
+
+#players-icons .icon-container {
+  display: grid;
+  grid-template-columns: repeat(5, 15%);
+  justify-content: center;
+  grid-template-rows: 1fr;
+  font-size: 35px;
+  text-align: center;
+}
+#players-icons .icon-container p {
+  margin: 0;
+  text-shadow: 2px 2px 4px;
+}
+#players-icons .icon-container .sg-player-icon:hover {
+  cursor: pointer;
+}
+
+#sg-choice-container, #sg-spacer-container {
+  display: none;
+  opacity: 0;
+  transition: all 2s;
+}
+
+.sg-icon-row {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+.sg-icon-row p {
+  margin: 0;
+  width: 20%;
+  text-shadow: 2px 2px 4px;
+}
+
+#user-icon {
+  font-size: 50px;
+  opacity: 0;
+  transition: all 2s;
+}
+
+.sg-choice {
+  cursor: pointer;
+  padding: 1rem;
+  flex-basis: 20%;
+  text-align: center;
+  font-weight: 600;
+  font-style: italic;
+  background-color: #ffe4c4;
+  border: 3px ridge #dcdcdc;
+  border-radius: 50px;
+}
+.sg-choice:hover {
+  color: bisque;
+  background-color: black;
+}
+
+#sg-question-indicators {
+  display: flex;
+}
+#sg-question-indicators p {
+  opacity: 0;
+  transition: all 2s;
+  margin: 0;
+  font-family: "Modak", cursive;
+  font-size: 3rem;
+  color: #ffe4c4;
+  -webkit-text-stroke-color: #000000;
+  -webkit-text-stroke-width: 3px;
+}
+
+@media screen and (min-width: 900px) {
+  #players-icons .icon-container {
+    font-size: 75px;
+  }
+  #user-icon {
+    font-size: 100px;
+  }
+  #sg-question-indicators p {
+    font-size: 5rem;
+  }
+}
 @media print {
   .no-print {
     display: none;
   }
   .print {
-    display: block;
+    display: grid;
+    grid-template-columns: auto;
   }
-}
-#app-title-input {
-  display: none;
 }/*# sourceMappingURL=Course-Index.css.map */

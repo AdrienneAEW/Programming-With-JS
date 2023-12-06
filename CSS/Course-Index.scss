@@ -1,3 +1,7 @@
+//GlLOBAL VARIABLES
+$standard-dark: #000000;
+$standard-light: #ffffff;
+
 main {
     padding: 1rem;
 }
@@ -76,6 +80,155 @@ form {
         }
     }
 }
+//#endregion
+//#region NOTE TAKING APP
+#app-title-input {
+    display: none;
+}
+
+//#endregion
+
+//#region SWITCH GAME APP
+/*google fonts - https://fonts.google.com/share?selection.family=Arsenal:wght@400;700%7CDuru%2BSans%7CModak
+font-family: 'Arsenal', sans-serif;
+font-family: 'Duru Sans', sans-serif;
+font-family: 'Modak', cursive;
+*/
+//GAME GLOBAL VARIABLES
+$sgheading-font: 'Arsenal', sans-serif;
+$sgbody-font: 'Duru Sans', sans-serif;
+$sgaccent-font: 'Modak', cursive;
+$sglight: #ffe4c4;
+$sgshadow: 2px 2px 4px;
+$sgbutton: #5B4480;
+
+//SG Styles
+#switch-game-main {
+    font-family: $sgbody-font;
+
+    h1, h2, h3, h4, h5, h6, details summary {
+        font-family: $sgheading-font;
+    }
+
+    details summary {
+        font-size: 1.5em;
+        font-weight: 600;
+    }
+}
+
+.switch-game-btn {
+    background-color: $sgbutton;
+    color: $sglight;
+    padding: .75rem 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12rem;
+    opacity: .5;
+}
+
+#players-icons {
+    .icon-container {
+        display: grid;
+        grid-template-columns: repeat(5, 15%);
+        justify-content: center;
+        grid-template-rows: 1fr;
+        font-size: 35px;
+        text-align: center;
+
+        p {
+            margin: 0;
+            text-shadow: $sgshadow;
+        }
+
+        .sg-player-icon {
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+#sg-choice-container, #sg-spacer-container {
+    display: none;
+    opacity: 0;
+    transition: all 2s;
+}
+
+.sg-icon-row {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+    p {
+        margin: 0;
+        width: 20%;
+        text-shadow: $sgshadow;
+    }
+}
+
+#user-icon {
+    font-size: 50px;
+    opacity: 0;
+    transition: all 2s;
+}
+
+.sg-choice {
+    cursor: pointer;
+    padding: 1rem;
+    flex-basis: 20%;
+    text-align: center;
+    font-weight: 600;
+    font-style: italic;
+    background-color: #ffe4c4;
+    border: 3px ridge #dcdcdc;
+    border-radius: 50px;
+
+    &:hover {
+        color: bisque;
+        background-color: black;
+    }
+}
+
+#sg-question-indicators {   
+    display: flex;
+
+    p {
+        opacity: 0;
+        transition: all 2s;
+        margin: 0;
+        font-family: $sgaccent-font;
+        font-size: 3rem;
+        color: $sglight;
+        -webkit-text-stroke-color: $standard-dark;
+        -webkit-text-stroke-width: 3px;
+    }
+
+    
+}
+
+
+//#endregion
+
+@media screen and (min-width: 900px) {
+    //#region SWITCH GAME APP
+    #players-icons {
+        .icon-container {
+            font-size: 75px;
+        }
+    }
+
+    #user-icon {
+        font-size: 100px;
+    }
+
+    #sg-question-indicators {
+        p {
+           font-size: 5rem;
+        }       
+    }
+//#endregion
+}
+
 @media print {
     .no-print {
         display: none;
@@ -85,16 +238,4 @@ form {
         display: grid;
         grid-template-columns: auto;
     }
-
-    
-
 }
-
-//#endregion
-
-//#region NOTE TAKING APP
-#app-title-input {
-    display: none;
-}
-
-//#endregion

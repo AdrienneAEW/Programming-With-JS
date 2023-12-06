@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="AdrienneAEW">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Arsenal:wght@400;700&family=Duru+Sans&family=Modak&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/CSS/Course-Index.css">
+    <title>Switch-Game App</title>
+</head>
+<body>
+    <main id="switch-game-main">
+        <h1>Switch-Game App</h1>
+        <p class="app-description no-print">Our version of the <em>Game Show Network Game - <strong>Switch</strong></em> &mdash; Give your users a game break.</p>
+        <details class="sg-instructions" role="definition">
+            <summary>How To Play</summary>
+            <ol>
+                <li>Answer 5 out of 12 questions correctly.</li>
+                <li>Each correct answer moves you forward one space.</li>
+                <li>Each incorrect answer move you back one space.</li>
+                <li>If you reach the space marked 1 before answering 12 questions &mdash; You have won the game.</li>
+                <li>If you don't reach the spaced marked 1 before answering 12 questions &mdash; You have loss the game.</li>
+                <li>Have fund and good luck!</li>
+            </ol>
+        </details>
+        
+        <section id="players-icons" class="app-heading">
+            <h2>Choose Your Icon</h2>
+            <div class="icon-container">
+                <p class="sg-player-icon" role="img" aria-label="lion" onclick="playerIcon(this)">&#129409;</p>
+                <p class="sg-player-icon" role="img" aria-label="horse" onclick="playerIcon(this)">&#128014;</p>
+                <p class="sg-player-icon" role="img" aria-label="monkey" onclick="playerIcon(this)">&#128018;</p>
+                <p class="sg-player-icon" role="img" aria-label="elephant" onclick="playerIcon(this)">&#128024;</p>
+                <p class="sg-player-icon" role="img" aria-label="bear" onclick="playerIcon(this)">&#128059;</p>
+            </div>
+            <button type="button" class="switch-game-btn sg-icon-btn" onclick="changeIcon()" disabled>Change Icon</button>
+            <button type="button" class="switch-game-btn sg-start-btn" onclick="startGame()" disabled>Restart Game</button>
+        </section>
+             
+        <section id="sg-gameboard" class="switch-game-containter app-container">
+            <div class="sg-choice-content">
+                <p id="sg-question">Click on "Start Game" to generate your first questions.</p>
+                <div role="group" id="sg-choice-container">
+                    <p class="sg-choice" aria-label="Click to choose this answer." title="Click to choose this answer." onclick="answerChoice(this)">Choice 1</p>
+                    <p class="sg-choice" aria-label="Click to choose this answer." title="Click to choose this answer." onclick="answerChoice(this)">Choice 2</p>
+                    <p class="sg-choice" aria-label="Click to choose this answer." title="Click to choose this answer." onclick="answerChoice(this)">Choice 3</p>
+                </div>
+
+                <div id="game-status">
+                    <div class="sg-icon-row">
+                        <p class="icon-spacer"></p>
+                        <p class="icon-spacer"></p>
+                        <p class="icon-spacer"></p>
+                        <p class="icon-spacer"></p>
+                        <p id="user-icon" class="icon-spacer"></p>
+                    </div>
+                    
+                    <div id="sg-question-indicators" class="sg-icon-row">
+                        <p class="sg-question-indicator">1</p>
+                        <p class="sg-question-indicator">2</p>
+                        <p class="sg-question-indicator">3</p>
+                        <p class="sg-question-indicator">4</p>
+                        <p class="sg-question-indicator">5</p>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+        
+    </main>
+    <script src="/JScript/Switch-Game.js"></script>
+</body>
+</html>
